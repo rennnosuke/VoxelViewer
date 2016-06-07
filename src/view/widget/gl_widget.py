@@ -161,13 +161,17 @@ class GLWidget(QtOpenGL.QGLWidget):
         :param event:  イベントオブジェクト
         :return:
         """
+
+        if not event.buttons():
+            return
+
         dx = event.x() - self.last_mouse_pos.x()
         dy = event.y() - self.last_mouse_pos.y()
 
-        if event.buttons() & QtCore.Qt.LeftButton:
+        if QtCore.Qt.LeftButton:
             self.set_x_rotation(self.rx + self.ROTATE_UNIT / 2 * dy)
             self.set_y_rotation(self.ry + self.ROTATE_UNIT / 2 * dx)
-        elif event.buttons() & QtCore.Qt.RightButton:
+        elif QtCore.Qt.RightButton:
             self.set_x_rotation(self.rx + self.ROTATE_UNIT / 2 * dy)
             self.set_z_rotation(self.rz + self.ROTATE_UNIT / 2 * dx)
 
