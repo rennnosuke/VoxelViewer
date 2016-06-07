@@ -32,6 +32,7 @@ class VoxelRenderer(AbstractRenderer):
             warnings.warn("VoxelRenderer::render() : voxel is None.")
             return
         # 正規化して描画
+        print "render"
         n_div = self.__voxel.n_div
         for x, y, z in self.__voxel.active_coordinates:
             self.__cube(float(x) / n_div - 0.5,

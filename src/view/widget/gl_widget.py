@@ -103,7 +103,8 @@ class GLWidget(QtOpenGL.QGLWidget):
         :return:
         """
         self.qglClearColor(QtGui.QColor.fromRgb(*self.bg_color))
-        self.object = self.__make_object()
+        # 描画オブジェクトの初期化
+        self.update_object()
         # シェーディングの設定
         GL.glShadeModel(GL.GL_FLAT)
         # デプスバッファの更新を有効化
@@ -154,10 +155,10 @@ class GLWidget(QtOpenGL.QGLWidget):
         dy = event.y() - self.last_mouse_pos.y()
 
         if event.buttons() & QtCore.Qt.LeftButton:
-            self.__set_x_rotation(self.rx + self.ROTATE_UNIT / 2 * dy)
+            self.set_x_rotation(self.rx + self.ROTATE_UNIT / 2 * dy)
             self.set_y_rotation(self.ry + self.ROTATE_UNIT / 2 * dx)
         elif event.buttons() & QtCore.Qt.RightButton:
-            self.__set_x_rotation(self.rx + self.ROTATE_UNIT / 2 * dy)
+            self.set_x_rotation(self.rx + self.ROTATE_UNIT / 2 * dy)
             self.set_z_rotation(self.rz + self.ROTATE_UNIT / 2 * dx)
 
         self.last_mouse_pos = event.pos()
@@ -174,3 +175,6 @@ class GLWidget(QtOpenGL.QGLWidget):
         GL.glEndList()
 
         return genList
+
+    def update_object(self):
+        self.object = self.__make_object()

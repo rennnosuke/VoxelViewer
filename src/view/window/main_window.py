@@ -36,9 +36,10 @@ class MainWindow(QtGui.QMainWindow):
 
         # menu bar
         self.file_menu = self.menuBar().addMenu("&File")
-        self.file_menu.addMenu("Open")
         # for mac
         self.menuBar().setNativeMenuBar(False)
+        # menu bar action
+        self.file_menu.addAction("Open", self.load_binvox)
 
         # renderer
         self.voxel_renderer = VoxelRenderer()
@@ -82,15 +83,18 @@ class MainWindow(QtGui.QMainWindow):
         bg_palette.setColor(QtGui.QPalette.Background, q_color)
         self.setPalette(bg_palette)
 
-    def load_binvox(self, path):
+    def load_binvox(self):
         """
         binvoxファイルの読み込み
         :param path:
         :return:
         """
-        binvox = parse_binvox(path)
+        file_name = QtGui.QFileDialog().getOpenFileName(self, 'Open', "~")
+        binvox = parse_binvox(file_name)
         voxel = Voxel(np.argwhere(binvox), len(binvox))
         self.voxel_renderer.set_voxel(voxel)
+        self.gl.update_object()
+        self.gl.updateGL()
 
     def create_slider(self):
         """
