@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+"""
+
+parse.py
+
+パースユーティリティモジュール
+
+
+"""
+
 import struct
 import numpy as np
 
