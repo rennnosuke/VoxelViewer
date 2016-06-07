@@ -148,9 +148,19 @@ class GLWidget(QtOpenGL.QGLWidget):
         GL.glMatrixMode(GL.GL_MODELVIEW)
 
     def mousePressEvent(self, event):
+        """
+        マウスが押下された時のイベントリスナー
+        :param event: イベントオブジェクト
+        :return:
+        """
         self.last_mouse_pos = event.pos()
 
     def mouseMoveEvent(self, event):
+        """
+        マウスが移動した時のイベントリスナー
+        :param event:  イベントオブジェクト
+        :return:
+        """
         dx = event.x() - self.last_mouse_pos.x()
         dy = event.y() - self.last_mouse_pos.y()
 
@@ -164,6 +174,10 @@ class GLWidget(QtOpenGL.QGLWidget):
         self.last_mouse_pos = event.pos()
 
     def __make_object(self):
+        """
+        GLWidget上オブジェクトを描画する
+        :return:
+        """
         genList = GL.glGenLists(1)
         GL.glNewList(genList, GL.GL_COMPILE)
 
@@ -177,4 +191,8 @@ class GLWidget(QtOpenGL.QGLWidget):
         return genList
 
     def update_object(self):
+        """
+        描画オブジェクトを更新する
+        :return:
+        """
         self.object = self.__make_object()

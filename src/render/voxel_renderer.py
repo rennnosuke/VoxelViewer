@@ -40,12 +40,35 @@ class VoxelRenderer(AbstractRenderer):
                         float(z) / n_div - 0.5, 1. / n_div)
 
     def set_color(self, color):
+        """
+        色情報のmutator
+        :type color: tuple
+        :param color: RGB値を含む長さ3のタプル
+        :return:
+        """
+        assert len(color) == 3
         self.__color = color
 
     def set_voxel(self, voxel):
+        """
+        ボクセルのmutator
+        :type voxel: Voxel
+        :param voxel: ボクセルクラスオブジェクト
+        :return:
+        """
         self.__voxel = voxel
 
     def __cube(self, x, y, z, cube_size):
+        """
+        立方体をOpenGLで描画するメソッド
+        指定した座標を中心に一辺cube_sizeの立方体を描画
+        :type x,y,z,cube_cube_size:int
+        :param x: 中心座標のx
+        :param y: 中心座標のy
+        :param z: 中心座標のz
+        :param cube_size: 一辺のサイズ
+        :return:
+        """
         hs = cube_size / 2
 
         # self.qglColor(QtGui.QColor.fromRgb(*self.__color))
