@@ -151,7 +151,6 @@ class GLWidget(QtOpenGL.QGLWidget):
         """
         マウスが押下された時のイベントリスナー
         :param event: イベントオブジェクト
-        :return:
         """
         self.last_mouse_pos = event.pos()
 
@@ -159,7 +158,6 @@ class GLWidget(QtOpenGL.QGLWidget):
         """
         マウスが移動した時のイベントリスナー
         :param event:  イベントオブジェクト
-        :return:
         """
 
         if not event.buttons():
@@ -185,11 +183,8 @@ class GLWidget(QtOpenGL.QGLWidget):
         genList = GL.glGenLists(1)
         GL.glNewList(genList, GL.GL_COMPILE)
 
-        GL.glBegin(GL.GL_QUADS)
-
         self.renderer.render()
 
-        GL.glEnd()
         GL.glEndList()
 
         return genList

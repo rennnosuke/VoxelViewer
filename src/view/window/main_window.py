@@ -86,8 +86,6 @@ class MainWindow(QtGui.QMainWindow):
     def load_binvox(self):
         """
         binvoxファイルの読み込み
-        :param path:
-        :return:
         """
         file_name = QtGui.QFileDialog().getOpenFileName(self, 'Open', "~")
         binvox = parse_binvox(file_name)

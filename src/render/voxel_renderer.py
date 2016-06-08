@@ -62,38 +62,49 @@ class VoxelRenderer(AbstractRenderer):
 
         # self.qglColor(QtGui.QColor.fromRgb(*self.__color))
 
+        GL.glBegin(GL.GL_QUADS)
+
         # top
+        GL.glNormal3dv((0.0, 0.0, 1.0))
         GL.glVertex3d(x - hs, y - hs, z + hs)
         GL.glVertex3d(x + hs, y - hs, z + hs)
         GL.glVertex3d(x + hs, y + hs, z + hs)
         GL.glVertex3d(x - hs, y + hs, z + hs)
 
         # bottom
+        GL.glNormal3dv((0.0, 0.0, -1.0))
         GL.glVertex3d(x - hs, y - hs, z - hs)
         GL.glVertex3d(x - hs, y + hs, z - hs)
         GL.glVertex3d(x + hs, y + hs, z - hs)
         GL.glVertex3d(x + hs, y - hs, z - hs)
 
         # right side
+        GL.glNormal3dv((1.0, 0.0, 0.0))
+        GL.glVertex3d(x - hs, y - hs, z - hs)
         GL.glVertex3d(x + hs, y - hs, z - hs)
         GL.glVertex3d(x + hs, y + hs, z - hs)
         GL.glVertex3d(x + hs, y + hs, z + hs)
         GL.glVertex3d(x + hs, y - hs, z + hs)
 
         # left side
+        GL.glNormal3dv((-1.0, 0.0, 0.0))
         GL.glVertex3d(x - hs, y - hs, z - hs)
         GL.glVertex3d(x - hs, y - hs, z + hs)
         GL.glVertex3d(x - hs, y + hs, z + hs)
         GL.glVertex3d(x - hs, y + hs, z - hs)
 
         # back side
+        GL.glNormal3dv((0.0, 1.0, 0.0))
         GL.glVertex3d(x - hs, y + hs, z - hs)
         GL.glVertex3d(x - hs, y + hs, z + hs)
         GL.glVertex3d(x + hs, y + hs, z + hs)
         GL.glVertex3d(x + hs, y + hs, z - hs)
 
-        # # front side
+        # front side
+        GL.glNormal3dv((0.0, -1.0, 0.0))
         GL.glVertex3d(x - hs, y - hs, z - hs)
         GL.glVertex3d(x + hs, y - hs, z - hs)
         GL.glVertex3d(x + hs, y - hs, z + hs)
         GL.glVertex3d(x - hs, y - hs, z + hs)
+
+        GL.glEnd()
