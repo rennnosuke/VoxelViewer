@@ -22,7 +22,3 @@ class AbstractRenderer(object):
     @abc.abstractmethod
     def render(self):
         pass
-
-    @abc.abstractmethod
-    def set_color(self, color):
-        pass

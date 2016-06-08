@@ -25,29 +25,18 @@ class VoxelRenderer(AbstractRenderer):
         if voxel is not None:
             assert isinstance(voxel, Voxel)
         self.__voxel = voxel
-        self.__color = RED
 
     def render(self):
         if self.__voxel is None:
             warnings.warn("VoxelRenderer::render() : voxel is None.")
             return
         # 正規化して描画
-        print "render"
         n_div = self.__voxel.n_div
         for x, y, z in self.__voxel.active_coordinates:
             self.__cube(float(x) / n_div - 0.5,
                         float(y) / n_div - 0.5,
                         float(z) / n_div - 0.5, 1. / n_div)
 
-    def set_color(self, color):
-        """
-        色情報のmutator
-        :type color: tuple
-        :param color: RGB値を含む長さ3のタプル
-        :return:
-        """
-        assert len(color) == 3
-        self.__color = color
 
     def set_voxel(self, voxel):
         """
