@@ -114,10 +114,7 @@ class MainWindow(QtGui.QMainWindow):
         self.gl.updateGL()
 
     def set_light(self, checkbox):
-        if checkbox.isChecked():
-            self.gl.set_light_enable(str(checkbox.text()))
-        else:
-            self.gl.set_light_disable(str(checkbox.text()))
+        self.gl.set_light_enable(str(checkbox.text()), checkbox.isChecked())
 
     def create_slider(self):
         """

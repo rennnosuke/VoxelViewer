@@ -37,7 +37,7 @@ class GLWidget(QtOpenGL.QGLWidget):
 
     LIGHTS = (
         GLLight(GL.GL_LIGHT0, (-3.0, 0.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)),
-        GLLight(GL.GL_LIGHT1, (3.0, 0.0, 0.0,  1.0), (1.0, 1.0, 1.0, 1.0)),
+        GLLight(GL.GL_LIGHT1, (3.0, 0.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)),
         GLLight(GL.GL_LIGHT2, (0.0, -3.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)),
         GLLight(GL.GL_LIGHT3, (0.0, 3.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)))
 
@@ -140,38 +140,24 @@ class GLWidget(QtOpenGL.QGLWidget):
         # 光源のDiffuse/Specular設定
         for l in self.LIGHTS:
             GL.glLightfv(l.type, GL.GL_DIFFUSE, l.diffuse)
-            # GL.glLightfv(l.type, GL.GL_SPECULAR,l.specular)
 
-
-    def set_light_enable(self, name):
+    def set_light_enable(self, name, is_enabled):
         """
-        指定した光源を有効にする
-        :param name:
-        :param position:
-        :param diffuse:
-        :param specular:
-        :return:
+        光源の有効・無効を切り替え
+        :param name: 光源識別用の名前
+        :param is_enabled: 有効にするかどうか
         """
 
         gl_light = self.LIGHTS[self.LIGHTS.index(name)]
-        GL.glEnable(gl_light.type)
-        self.updateGL()
-
-    def set_light_disable(self, name):
-        """
-        指定した光源を無効にする
-        :param light_name:
-        :return:
-        """
-
-        gl_light = self.LIGHTS[self.LIGHTS.index(name)]
-        GL.glDisable(gl_light.type)
+        if is_enabled:
+            GL.glEnable(gl_light.type)
+        else:
+            GL.glDisable(gl_light.type)
         self.updateGL()
 
     def paintGL(self):
         """
         OpenGLによる描画処理
-        :return:
         """
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
         GL.glLoadIdentity()
@@ -190,7 +176,6 @@ class GLWidget(QtOpenGL.QGLWidget):
         ウィジェットがリサイズされるときの処理
         :param width: 親ウィジェットの幅
         :param height: 親ウィジェットの高さ
-        :return:
         """
         side = min(width, height)
         if side < 0:
