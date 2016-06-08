@@ -11,7 +11,7 @@ Qtウィジェット群をまとめるMainWindowクラスを包含するモジ�
 
 import numpy as np
 from PyQt4 import QtGui, QtCore
-from src.view.widget import gl_widget
+from src.view.widget.gl_widget import GLWidget
 from src.util.parse import parse_binvox
 from src.util import color
 from src.model.voxel import Voxel
@@ -35,7 +35,7 @@ class MainWindow(QtGui.QMainWindow):
         self.set_background_color(bg_color)
 
         # menu bar
-        self.file_menu = self.menuBar().addMenu("&File")
+        self.file_menu = self.menuBar().addMenu("File")
         # for mac
         self.menuBar().setNativeMenuBar(False)
         # menu bar action
@@ -45,32 +45,51 @@ class MainWindow(QtGui.QMainWindow):
         self.voxel_renderer = VoxelRenderer()
 
         # GL widget
-        self.gl = gl_widget.GLWidget(self.voxel_renderer)
+        self.gl = GLWidget(self.voxel_renderer)
 
         # sliders
-        self.x_slider = self.create_slider()
-        self.y_slider = self.create_slider()
-        self.z_slider = self.create_slider()
+        x_slider = self.create_slider()
+        y_slider = self.create_slider()
+        z_slider = self.create_slider()
+        slider_layout = QtGui.QVBoxLayout()
+        slider_layout.addWidget(x_slider)
+        slider_layout.addWidget(y_slider)
+        slider_layout.addWidget(z_slider)
+        # callback setting for sliders and gl widget.
+        x_slider.valueChanged.connect(self.gl.set_x_rotation)
+        self.gl.SIGNAL_X_ROTATION_CHANGED.connect(x_slider.setValue)
+        y_slider.valueChanged.connect(self.gl.set_y_rotation)
+        self.gl.SIGNAL_Y_ROTATION_CHANGED.connect(y_slider.setValue)
+        z_slider.valueChanged.connect(self.gl.set_z_rotation)
+        self.gl.SIGNAL_Z_ROTATION_CHANGED.connect(z_slider.setValue)
+
+        # light checkbox
+        left_light, right_light, bottom_light, top_light = self.gl.LIGHTS
+        left_lc = self.create_checkbox(left_light.type.name, color.WHITE)
+        right_lc = self.create_checkbox(right_light.type.name, color.WHITE)
+        bottom_lc = self.create_checkbox(bottom_light.type.name, color.WHITE)
+        top_lc = self.create_checkbox(top_light.type.name, color.WHITE)
+        checkbox_layout = QtGui.QVBoxLayout()
+        checkbox_layout.addWidget(left_lc)
+        checkbox_layout.addWidget(right_lc)
+        checkbox_layout.addWidget(bottom_lc)
+        checkbox_layout.addWidget(top_lc)
+        # callback setting for checkboxes.
+        left_lc.stateChanged.connect(lambda state: self.set_light(left_lc))
+        right_lc.stateChanged.connect(lambda state: self.set_light(right_lc))
+        bottom_lc.stateChanged.connect(lambda state: self.set_light(bottom_lc))
+        top_lc.stateChanged.connect(lambda state: self.set_light(top_lc))
 
         # register all widgets to a main widget.
-        slider_layout = QtGui.QGridLayout()
-        slider_layout.addWidget(self.gl)
-        slider_layout.addWidget(self.x_slider)
-        slider_layout.addWidget(self.y_slider)
-        slider_layout.addWidget(self.z_slider)
+        layout = QtGui.QGridLayout()
+        layout.addWidget(self.gl, 0, 0)
+        layout.addLayout(slider_layout, 1, 0, 1, 2)
+        layout.addLayout(checkbox_layout, 0, 1)
         main_widget = QtGui.QWidget()
-        main_widget.setLayout(slider_layout)
+        main_widget.setLayout(layout)
 
         # add widget to a window.
         self.setCentralWidget(main_widget)
-
-        # callback setting for sliders and gl widget.
-        self.x_slider.valueChanged.connect(self.gl.set_x_rotation)
-        self.gl.SIGNAL_X_ROTATION_CHANGED.connect(self.x_slider.setValue)
-        self.y_slider.valueChanged.connect(self.gl.set_y_rotation)
-        self.gl.SIGNAL_Y_ROTATION_CHANGED.connect(self.y_slider.setValue)
-        self.z_slider.valueChanged.connect(self.gl.set_z_rotation)
-        self.gl.SIGNAL_Z_ROTATION_CHANGED.connect(self.z_slider.setValue)
 
     def set_background_color(self, rgb):
         """
@@ -94,6 +113,12 @@ class MainWindow(QtGui.QMainWindow):
         self.gl.update_object()
         self.gl.updateGL()
 
+    def set_light(self, checkbox):
+        if checkbox.isChecked():
+            self.gl.set_light_enable(str(checkbox.text()))
+        else:
+            self.gl.set_light_disable(str(checkbox.text()))
+
     def create_slider(self):
         """
         Sliderウィジェットを生成する
@@ -106,3 +131,11 @@ class MainWindow(QtGui.QMainWindow):
         slider.setTickInterval(15 * self.gl.ROTATE_UNIT)
         slider.setTickPosition(QtGui.QSlider.TicksRight)
         return slider
+
+    def create_checkbox(self, text, text_rgb):
+        check_box = QtGui.QCheckBox(text, self)
+        palette = check_box.palette()
+        palette.setColor(QtGui.QPalette.Foreground,
+                         QtGui.QColor.fromRgb(*text_rgb))
+        check_box.setPalette(palette)
+        return check_box

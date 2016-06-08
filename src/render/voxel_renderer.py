@@ -12,7 +12,6 @@ Voxel描画用オブジェクトVoxelRendererを包含するモジュール
 import warnings
 from OpenGL import GL
 from abstract_renderer import AbstractRenderer
-from src.util.color import RED
 from src.model.voxel import Voxel
 
 
@@ -37,7 +36,6 @@ class VoxelRenderer(AbstractRenderer):
                         float(y) / n_div - 0.5,
                         float(z) / n_div - 0.5, 1. / n_div)
 
-
     def set_voxel(self, voxel):
         """
         ボクセルのmutator
@@ -59,8 +57,6 @@ class VoxelRenderer(AbstractRenderer):
         :return:
         """
         hs = cube_size / 2
-
-        # self.qglColor(QtGui.QColor.fromRgb(*self.__color))
 
         GL.glBegin(GL.GL_QUADS)
 

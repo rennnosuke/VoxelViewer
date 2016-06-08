@@ -20,6 +20,27 @@ class GLWidget(QtOpenGL.QGLWidget):
     OpenGLを用いた3D描画を行うQtウィジェットクラス
     """
 
+    class GLLight(object):
+        def __init__(self, type, position, diffuse):
+            self.type = type
+            self.position = position
+            self.diffuse = diffuse
+            # self.specular = specular
+
+        def __eq__(self, other):
+            if isinstance(other, self.__class__):
+                return self.type.name == other.type.name
+            elif isinstance(other, str):
+                return self.type.name == other
+            else:
+                return id(self) == id(other)
+
+    LIGHTS = (
+        GLLight(GL.GL_LIGHT0, (-3.0, 0.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)),
+        GLLight(GL.GL_LIGHT1, (3.0, 0.0, 0.0,  1.0), (1.0, 1.0, 1.0, 1.0)),
+        GLLight(GL.GL_LIGHT2, (0.0, -3.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)),
+        GLLight(GL.GL_LIGHT3, (0.0, 3.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)))
+
     DEFAULT_BG_COLOR = color.DARKULA_DARK
 
     DEFAULT_CAMERA_LOCATION = (0, 0, -10.0)
@@ -114,6 +135,38 @@ class GLWidget(QtOpenGL.QGLWidget):
         GL.glCullFace(GL.GL_FRONT)
         # アンチエイリアス
         GL.glEnable(GL.GL_POLYGON_SMOOTH)
+        # 陰影付けを有効にする
+        GL.glEnable(GL.GL_LIGHTING)
+        # 光源のDiffuse/Specular設定
+        for l in self.LIGHTS:
+            GL.glLightfv(l.type, GL.GL_DIFFUSE, l.diffuse)
+            # GL.glLightfv(l.type, GL.GL_SPECULAR,l.specular)
+
+
+    def set_light_enable(self, name):
+        """
+        指定した光源を有効にする
+        :param name:
+        :param position:
+        :param diffuse:
+        :param specular:
+        :return:
+        """
+
+        gl_light = self.LIGHTS[self.LIGHTS.index(name)]
+        GL.glEnable(gl_light.type)
+        self.updateGL()
+
+    def set_light_disable(self, name):
+        """
+        指定した光源を無効にする
+        :param light_name:
+        :return:
+        """
+
+        gl_light = self.LIGHTS[self.LIGHTS.index(name)]
+        GL.glDisable(gl_light.type)
+        self.updateGL()
 
     def paintGL(self):
         """
@@ -122,6 +175,9 @@ class GLWidget(QtOpenGL.QGLWidget):
         """
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
         GL.glLoadIdentity()
+        # 光源位置設定
+        for l in self.LIGHTS:
+            GL.glLightfv(l.type, GL.GL_POSITION, l.position)
         # カメラをデフォルト位置からどれだけ移動するか
         GL.glTranslated(*self.DEFAULT_CAMERA_LOCATION)
         GL.glRotated(self.rx / self.ROTATE_UNIT, 1.0, 0.0, 0.0)
