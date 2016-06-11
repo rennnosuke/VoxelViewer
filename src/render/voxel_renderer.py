@@ -76,7 +76,6 @@ class VoxelRenderer(AbstractRenderer):
 
         # right side
         GL.glNormal3dv((1.0, 0.0, 0.0))
-        GL.glVertex3d(x - hs, y - hs, z - hs)
         GL.glVertex3d(x + hs, y - hs, z - hs)
         GL.glVertex3d(x + hs, y + hs, z - hs)
         GL.glVertex3d(x + hs, y + hs, z + hs)
