@@ -32,9 +32,12 @@ class VoxelRenderer(AbstractRenderer):
         # 正規化して描画
         n_div = self.__voxel.n_div
         for x, y, z in self.__voxel.active_coordinates:
+            GL.glBegin(GL.GL_QUADS)
             self.__cube(float(x) / n_div - 0.5,
                         float(y) / n_div - 0.5,
                         float(z) / n_div - 0.5, 1. / n_div)
+            GL.glEnd()
+
 
     def set_voxel(self, voxel):
         """
@@ -58,7 +61,6 @@ class VoxelRenderer(AbstractRenderer):
         """
         hs = cube_size / 2
 
-        GL.glBegin(GL.GL_QUADS)
 
         # top
         GL.glNormal3dv((0.0, 0.0, 1.0))
@@ -102,4 +104,3 @@ class VoxelRenderer(AbstractRenderer):
         GL.glVertex3d(x + hs, y - hs, z + hs)
         GL.glVertex3d(x - hs, y - hs, z + hs)
 
-        GL.glEnd()
