@@ -13,6 +13,7 @@ import warnings
 from OpenGL import GL
 from abstract_renderer import AbstractRenderer
 from src.model.voxel import Voxel
+from src.render.object.cube import cube
 
 
 class VoxelRenderer(AbstractRenderer):
@@ -33,9 +34,9 @@ class VoxelRenderer(AbstractRenderer):
         n_div = self.__voxel.n_div
         for x, y, z in self.__voxel.active_coordinates:
             GL.glBegin(GL.GL_QUADS)
-            self.__cube(float(x) / n_div - 0.5,
-                        float(y) / n_div - 0.5,
-                        float(z) / n_div - 0.5, 1. / n_div)
+            cube(float(x) / n_div - 0.5,
+                 float(y) / n_div - 0.5,
+                 float(z) / n_div - 0.5, 1. / n_div)
             GL.glEnd()
 
     def set_voxel(self, voxel):
@@ -46,58 +47,3 @@ class VoxelRenderer(AbstractRenderer):
         :return:
         """
         self.__voxel = voxel
-
-    def __cube(self, x, y, z, cube_size):
-        """
-        立方体をOpenGLで描画するメソッド
-        指定した座標を中心に一辺cube_sizeの立方体を描画
-        :type x,y,z,cube_cube_size:int
-        :param x: 中心座標のx
-        :param y: 中心座標のy
-        :param z: 中心座標のz
-        :param cube_size: 一辺のサイズ
-        :return:
-        """
-        hs = cube_size / 2
-
-        # top
-        GL.glNormal3dv((0.0, 0.0, 1.0))
-        GL.glVertex3d(x - hs, y - hs, z + hs)
-        GL.glVertex3d(x + hs, y - hs, z + hs)
-        GL.glVertex3d(x + hs, y + hs, z + hs)
-        GL.glVertex3d(x - hs, y + hs, z + hs)
-
-        # bottom
-        GL.glNormal3dv((0.0, 0.0, -1.0))
-        GL.glVertex3d(x - hs, y - hs, z - hs)
-        GL.glVertex3d(x - hs, y + hs, z - hs)
-        GL.glVertex3d(x + hs, y + hs, z - hs)
-        GL.glVertex3d(x + hs, y - hs, z - hs)
-
-        # right side
-        GL.glNormal3dv((1.0, 0.0, 0.0))
-        GL.glVertex3d(x + hs, y - hs, z - hs)
-        GL.glVertex3d(x + hs, y + hs, z - hs)
-        GL.glVertex3d(x + hs, y + hs, z + hs)
-        GL.glVertex3d(x + hs, y - hs, z + hs)
-
-        # left side
-        GL.glNormal3dv((-1.0, 0.0, 0.0))
-        GL.glVertex3d(x - hs, y - hs, z - hs)
-        GL.glVertex3d(x - hs, y - hs, z + hs)
-        GL.glVertex3d(x - hs, y + hs, z + hs)
-        GL.glVertex3d(x - hs, y + hs, z - hs)
-
-        # back side
-        GL.glNormal3dv((0.0, 1.0, 0.0))
-        GL.glVertex3d(x - hs, y + hs, z - hs)
-        GL.glVertex3d(x - hs, y + hs, z + hs)
-        GL.glVertex3d(x + hs, y + hs, z + hs)
-        GL.glVertex3d(x + hs, y + hs, z - hs)
-
-        # front side
-        GL.glNormal3dv((0.0, -1.0, 0.0))
-        GL.glVertex3d(x - hs, y - hs, z - hs)
-        GL.glVertex3d(x + hs, y - hs, z - hs)
-        GL.glVertex3d(x + hs, y - hs, z + hs)
-        GL.glVertex3d(x - hs, y - hs, z + hs)
