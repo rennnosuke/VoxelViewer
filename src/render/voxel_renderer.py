@@ -38,7 +38,6 @@ class VoxelRenderer(AbstractRenderer):
                         float(z) / n_div - 0.5, 1. / n_div)
             GL.glEnd()
 
-
     def set_voxel(self, voxel):
         """
         ボクセルのmutator
@@ -60,7 +59,6 @@ class VoxelRenderer(AbstractRenderer):
         :return:
         """
         hs = cube_size / 2
-
 
         # top
         GL.glNormal3dv((0.0, 0.0, 1.0))
@@ -103,4 +101,3 @@ class VoxelRenderer(AbstractRenderer):
         GL.glVertex3d(x + hs, y - hs, z - hs)
         GL.glVertex3d(x + hs, y - hs, z + hs)
         GL.glVertex3d(x - hs, y - hs, z + hs)
-

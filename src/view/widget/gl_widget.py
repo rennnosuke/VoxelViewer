@@ -36,9 +36,9 @@ class GLWidget(QtOpenGL.QGLWidget):
                 return id(self) == id(other)
 
     LIGHTS = (
-        GLLight(GL.GL_LIGHT0, (-3.0, 0.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)),
-        GLLight(GL.GL_LIGHT1, (3.0, 0.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)),
-        GLLight(GL.GL_LIGHT2, (0.0, -3.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)),
+        GLLight(GL.GL_LIGHT0, (-3.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0)),
+        GLLight(GL.GL_LIGHT1, (3.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0)),
+        GLLight(GL.GL_LIGHT2, (0.0, -3.0, 0.0, 1.0), (0.0, 0.0, 1.0, 1.0)),
         GLLight(GL.GL_LIGHT3, (0.0, 3.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)))
 
     DEFAULT_BG_COLOR = color.DARKULA_DARK
