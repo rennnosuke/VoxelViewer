@@ -13,7 +13,7 @@ import warnings
 from OpenGL import GL
 from abstract_renderer import AbstractRenderer
 from src.model.voxel import Voxel
-from src.render.object.cube import cube
+from src.render.object import cube
 
 
 class VoxelRenderer(AbstractRenderer):
